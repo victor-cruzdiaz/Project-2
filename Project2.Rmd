@@ -1,0 +1,129 @@
+---
+title: "Cancer Care Expenditures"
+author: "Logan Hashmi, Victor Cruz, Charles Lybrand"
+resource_files:
+- .Renviron
+output:
+  html_notebook:
+    code_folding: hide
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+runtime: shiny
+---
+
+#Data.world Project
+
+This project explores how much money is spent on cancer care. The data ranges from 2010 to predictions made out to 2020, and includes a breakdown of the types of costs, locations of cancer, and several other filters.
+
+The data and several insights can be found on [data.world](https://data.world/brookslybrand/s18-edv-project-2).
+
+The GitHub Classroom Repository containing all the code for this project can be found [here](https://github.com/CannataUTDV/s18dvproject1-hashmi-cruzdiaz-lybrand.git).
+
+#Load Packages
+This [code chunk](http://rmarkdown.rstudio.com/authoring_rcodechunks.html) loads the packages required to run the R code in the document.
+The last line of this code chunk enables document caching, which is expalined at this [link](http://rmarkdown.rstudio.com/authoring_rcodechunks.html).
+
+```{r setup, echo=FALSE}
+library(tidyverse)
+library(shiny)
+library(grid)
+library(data.world)
+library(DT)
+library(shinydashboard)
+library(plotly)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Display Session Information
+The [sessionInfo() fuction](https://cran.r-project.org/web/packages/sessioninfo/sessioninfo.pdf) queries and prints information about the current R session including  information about packages, and from where they were installed.
+```{r}
+sessionInfo()
+```
+
+#Insights
+
+Each of the team members began explore the data using [Tableau Public](https://public.tableau.com/en-us/s/). A lot was discovered about the data and about the cost of cancer treatment right now and in the future. Here are a few of these insights (more can be found [here](https://data.world/brookslybrand/s18-edv-project-2/insights))
+
+(Here is where we included Tableau plugins like seen in last class that show some of our insights)
+
+#Main Dataframes
+```{r}
+source("DataA.R", local = TRUE)
+```
+
+#Retrieve Regions from the SuperStore dataset
+The following query retrieves the distinct region names from the SuperStore dataset at data.world and saves the region names in the regions variable.
+```{r}
+project <- "https://data.world/brookslybrand/s18-edv-project-2-dataset"
+data.world::set_config(cfg_env("DW_API")) 
+cancers <- data.world::query(data.world::qry_sql(
+ "   
+	select distinct cancer_site
+	from cancer_data 
+ "), 
+dataset = project)
+```
+
+#Create a Regions Variable
+Create a Regions variable with a string constructed from the selected regions in the input$selectRegion_1 variable.This Regions variable will be used in the title of the ggplot below.
+
+```{r}
+Cancers <- eventReactive(c(input$selectCancer_1), { 
+  library('stringr')
+  str_c(input$selectCancer_1, collapse=', ')
+})
+```
+
+#Create Panel with Select List
+The following code creates an input panel for the Interactive Document, which has a [select box](https://shiny.rstudio.com/reference/shiny/latest/selectInput.html) for selecting regions (notice - choices is set to the regions variable that was loaded by the previous query) For a complete list of Shiny functions, please see this [link](https://shiny.rstudio.com/reference/shiny/latest/).
+
+```{r}
+inputPanel(
+  selectInput("selectCancer_1", label = "Select Cancer Site",choices = cancers, multiple=TRUE),
+  sliderInput("selectYear_1", label = "Year:", min = 2010, max = 2020, value = c(2010, 2020), step = 1)
+)
+```
+
+#Render and Display the Shipping Costs Histograms
+
+Using [ggplotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1/topics/ggplotly) and [shinydashborad](https://rstudio.github.io/shinydashboard/structure.html#dynamic-content-1)
+
+```{r}
+dashboardPage(
+  dashboardHeader(
+  ),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Total Cost Histogram", tabName = "histogram", icon = icon("dashboard"))
+      
+      
+    )
+  ),
+  dashboardBody(
+    tabItems(
+      # 1. "Total Costs Histogram" tab content
+      tabItem(tabName = "histogram",
+        p("You can actually put some descriptive text here - see https://shiny.rstudio.com/articles/css.html"),
+        source("Histogram1UI.R",local = TRUE)$value
+      )
+    )
+  )
+)
+source("Histogram1Server.R", local = TRUE)
+
+```
+
+
+#Main Discoveries
+
+The thing we found most interesting and important in our dataset was....
+
+(This is where we included the main dashboard and all relevant information)
+
+
+#Appendix
+Data cleaning Code.
+
+
