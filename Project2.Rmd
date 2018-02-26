@@ -46,6 +46,12 @@ sessionInfo()
 
 Each of the team members began explore the data using [Tableau Public](https://public.tableau.com/en-us/s/). A lot was discovered about the data and about the cost of cancer treatment right now and in the future. Here are a few of these insights (more can be found [here](https://data.world/brookslybrand/s18-edv-project-2/insights))
 
+<iframe src="https://public.tableau.com/profile/victor.cruz.diaz#!/vizhome/CancerTreatmentTotalCosts/CancerTreatmentTotalCosts?:showVizHome=no" width="800" height="500"></iframe>
+
+<iframe src="https://public.tableau.com/profile/victor.cruz.diaz#!/vizhome/CancerTreatmentInitialYearAfterDiagnosisCosts/CancerTreatmentInitialYearAfterDiagnosisCosts?:showVizHome=no" width="800" height="500"></iframe>
+
+<iframe src="https://public.tableau.com/profile/victor.cruz.diaz#!/vizhome/CancerTreatmentLastYearofLifeCosts/CancerTreatmentLastYearofLifeCosts?:showVizHome=no" width="800" height="500"></iframe>
+
 (Here is where we included Tableau plugins like seen in last class that show some of our insights)
 
 #Main Dataframes
